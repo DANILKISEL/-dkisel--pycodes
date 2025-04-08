@@ -1,8 +1,9 @@
 import json
 import pygame
 
-def init():
-    global color_map_f
+
+def color_map_f():
+
 
     # Load color map from JSON file
     with open('./colors.json', 'r') as file:
@@ -31,4 +32,7 @@ def init():
         pygame.K_9: tuple(json_color_map["9"]),
         pygame.K_0: tuple(json_color_map["0"])
     }
+
+    return color_map_f
+
 

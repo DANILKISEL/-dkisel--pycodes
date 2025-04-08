@@ -26,7 +26,6 @@ class DrawingApp:
         self.color = (0, 0, 255)  # Default color is blue
         self.drawing = False
         self.last_pos = None
-        colors.init()
 
         # Create a surface to draw on (initially blank)
         self.canvas = pygame.Surface(self.screen.get_size())
@@ -104,21 +103,10 @@ class DrawingApp:
 
 
         # Color selection keys
-        color_map_f = {
-            pygame.K_F1: (255, 0, 0), # Red
-            pygame.K_F2: (0, 255, 0), # Green
-            pygame.K_F3: (0, 0, 255), # Blue
-            pygame.K_F4: (255,165,0), # Orange
-            pygame.K_F5: (255,255,0), # Yellow
-            pygame.K_F6: (255,192,203), # Pink
-            pygame.K_F7: (128,0,128), # Purple
-            pygame.K_F8: (0,255,255), # Cyan
-            pygame.K_F9 : (255,255,255) # White
+        color_map = colors.color_map_f()
 
-        }
-
-        if event.key in color_map_f:
-            self.color = color_map_f[event.key]
+        if event.key in color_map:
+            self.color = color_map[event.key]
 
 if __name__ == "__main__":
     app = DrawingApp()
