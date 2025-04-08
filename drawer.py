@@ -1,6 +1,16 @@
 import pygame
 import os
-from filedialog import open_file_dialog
+import colors
+
+
+def set_window_icon(file_path):
+    """Set the window icon from a given file path."""
+    if os.path.isfile(file_path):
+        icon = pygame.image.load(file_path)
+        pygame.display.set_icon(icon)
+        print(f"Window icon set to {file_path}")
+    else:
+        print("Icon file not found. Please check the path.")
 
 
 class DrawingApp:
@@ -8,7 +18,7 @@ class DrawingApp:
         # Initialize Pygame and set up the display
         pygame.init()
         self.screen = pygame.display.set_mode((1000, 1000) , pygame.FULLSCREEN)
-        self.set_window_icon('./MARKUPLOGO.png')
+        set_window_icon('./MARKUPLOGO.png')
         pygame.display.set_caption("Draw")
         self.isFullscreen = True
         self.clock = pygame.time.Clock()
@@ -16,29 +26,13 @@ class DrawingApp:
         self.color = (0, 0, 255)  # Default color is blue
         self.drawing = False
         self.last_pos = None
+        colors.init()
 
         # Create a surface to draw on (initially blank)
         self.canvas = pygame.Surface(self.screen.get_size())
         self.canvas.fill((0, 0, 0))  # Start with a black canvas
 
         self.loaded_image = None  # Initialize variable for loaded image
-
-    def set_window_icon(self, file_path):
-        """Set the window icon from a given file path."""
-        if os.path.isfile(file_path):
-            icon = pygame.image.load(file_path)
-            pygame.display.set_icon(icon)
-            print(f"Window icon set to {file_path}")
-        else:
-            print("Icon file not found. Please check the path.")
-
-    def load_image(self, file_path):
-        """Load an image from a given file path."""
-        if os.path.isfile(file_path):
-            return pygame.image.load(file_path)
-        else:
-            print("File not found. Please check the path.")
-            return None
 
     def run(self):
         while True:
@@ -101,7 +95,7 @@ class DrawingApp:
             self.color = (0, 0, 0) if self.color != (0, 0, 0) else (255, 255, 255)
 
         if event.key == pygame.K_F12:
-            if self.isFullscreen == False:
+            if not self.isFullscreen:
                 self.screen = pygame.display.set_mode((1000, 1000) , pygame.FULLSCREEN)
                 self.isFullscreen = True
             else:
@@ -110,7 +104,7 @@ class DrawingApp:
 
 
         # Color selection keys
-        color_map = {
+        color_map_f = {
             pygame.K_F1: (255, 0, 0), # Red
             pygame.K_F2: (0, 255, 0), # Green
             pygame.K_F3: (0, 0, 255), # Blue
@@ -123,8 +117,8 @@ class DrawingApp:
 
         }
 
-        if event.key in color_map:
-            self.color = color_map[event.key]
+        if event.key in color_map_f:
+            self.color = color_map_f[event.key]
 
 if __name__ == "__main__":
     app = DrawingApp()
