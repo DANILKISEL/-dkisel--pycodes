@@ -15,23 +15,21 @@ def set_window_icon(file_path):
 
 class DrawingApp:
     def __init__(self):
-        # Initialize Pygame and set up the display
+         # Initialize Pygame
         pygame.init()
-        self.screen = pygame.display.set_mode((1000, 1000) , pygame.FULLSCREEN)
+
+        # Set up the display
+        self.screen = pygame.display.set_mode((1000, 1000), pygame.FULLSCREEN)
         set_window_icon('./MARKUPLOGO.png')
         pygame.display.set_caption("Draw")
-        self.isFullscreen = True
-        self.clock = pygame.time.Clock()
-        self.radius = 15
-        self.color = (0, 0, 255)  # Default color is blue
-        self.drawing = False
-        self.last_pos = None
 
-        # Create a surface to draw on (initially blank)
+        # Initialize attributes
+        self.isFullscreen, self.radius, self.color = True, 15, (0, 0, 255)  # Default color is blue
+        self.clock, self.drawing, self.last_pos = pygame.time.Clock(), False, None
+
+        # Create a blank canvas
         self.canvas = pygame.Surface(self.screen.get_size())
         self.canvas.fill((0, 0, 0))  # Start with a black canvas
-
-        self.loaded_image = None  # Initialize variable for loaded image
 
     def run(self):
         while True:
@@ -62,16 +60,10 @@ class DrawingApp:
             # Check if the display is still active before blitting
             if not pygame.display.get_init():
                 break
+            #fill with black
+            self.screen.fill((0, 0, 0))
 
-            # Blit the loaded image first (if any), then draw on top of it
-            if self.loaded_image is not None:
-                img_rect = self.loaded_image.get_rect(topleft=(0, 0))
-                self.screen.blit(self.loaded_image, img_rect.topleft)
-            else:
-                # If no image is loaded, fill with black
-                self.screen.fill((0, 0, 0))
-
-            # Blit the canvas (which contains drawings) over the loaded image
+            # Blit the canvas (which contains drawings) 
             self.screen.blit(self.canvas, (0, 0))
 
             pygame.display.flip()
