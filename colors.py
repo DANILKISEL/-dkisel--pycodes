@@ -6,7 +6,7 @@ def color_map_f():
 
 
     # Load color map from JSON file
-    with open('./colors.json', 'r') as file:
+    with open('./colors_map.json', 'r') as file:
         json_color_map = json.load(file)
 
     color_map_f = {

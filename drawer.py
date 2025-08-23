@@ -14,17 +14,40 @@ def set_window_icon(file_path):
 
 
 class DrawingApp:
+
+    @staticmethod
+    def setup_display(fullscreen):
+        """Set up the Pygame display."""
+        if fullscreen:
+            return pygame.display.set_mode((1000, 1000), pygame.FULLSCREEN)
+        else:
+            return pygame.display.set_mode((1000, 1000), pygame.RESIZABLE)
+
+    @staticmethod
+    def set_window_icon(file_path):
+        """Set the window icon from a given file path."""
+        if os.path.isfile(file_path):
+            icon = pygame.image.load(file_path)
+            pygame.display.set_icon(icon)
+            print(f"Window icon set to {file_path}")
+        else:
+            print("Icon file not found. Please check the path.")
+
+
+
     def __init__(self):
-         # Initialize Pygame
+        # Initialize Pygame
+        self.penThickness = 15
+        self.eraserThickness = 30
         pygame.init()
 
         # Set up the display
-        self.screen = pygame.display.set_mode((1000, 1000), pygame.FULLSCREEN)
+        self.screen = pygame.display.set_mode((1000, 1000), pygame.RESIZABLE)
         set_window_icon('./MARKUPLOGO.png')
         pygame.display.set_caption("Draw")
 
         # Initialize attributes
-        self.isFullscreen, self.radius, self.color = True, 15, (0, 0, 255)  # Default color is blue
+        self.isFullscreen, self.line_thickness, self.color = True, self.penThickness, (0, 0, 255)  # Default color is blue
         self.clock, self.drawing, self.last_pos = pygame.time.Clock(), False, None
 
         # Create a blank canvas
@@ -54,7 +77,7 @@ class DrawingApp:
                 if event.type == pygame.MOUSEMOTION:
                     if self.drawing and self.last_pos is not None:
                         # Draw a line from the last position to the current position on the canvas surface.
-                        pygame.draw.line(self.canvas, self.color, self.last_pos, event.pos, self.radius)
+                        pygame.draw.line(self.canvas, self.color, self.last_pos, event.pos, self.line_thickness)
                         self.last_pos = event.pos
 
             # Check if the display is still active before blitting
@@ -83,15 +106,12 @@ class DrawingApp:
             print(f"Drawing saved as '{filename}'")
 
         if event.key == pygame.K_e:  # Toggle eraser when 'E' is pressed
-            self.color = (0, 0, 0) if self.color != (0, 0, 0) else (255, 255, 255)
+            self.color = (0, 0, 0) if self.color !=  (0, 0, 0) else (255, 255, 255)
+            self.line_thickness = self.eraserThickness if self.line_thickness == self.penThickness else self.penThickness
 
         if event.key == pygame.K_F12:
-            if not self.isFullscreen:
-                self.screen = pygame.display.set_mode((1000, 1000) , pygame.FULLSCREEN)
-                self.isFullscreen = True
-            else:
-                self.screen = pygame.display.set_mode((1000, 1000))
-                self.isFullscreen = False
+            self.setup_display(self.isFullscreen)
+            self.isFullscreen = not self.isFullscreen
 
 
         # Color selection keys
